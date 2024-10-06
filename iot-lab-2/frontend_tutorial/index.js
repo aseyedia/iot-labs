@@ -1,5 +1,5 @@
 var server_port = 65432;
-var server_addr = "192.168.3.49";   // the IP address of your Raspberry PI
+var server_addr = "192.168.68.110";   // the IP address of your Raspberry PI
 
 function client(){
     
@@ -28,7 +28,7 @@ function client(){
 
 }
 
-function greeting(){
+function greeting() {
 
     // get the element from html
     var name = document.getElementById("myName").value;

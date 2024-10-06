@@ -1,15 +1,26 @@
 import socket
 
-HOST = "192.168.3.49" # IP address of your Raspberry PI
+HOST = "192.168.68.110"  # IP address of your Raspberry PI
 PORT = 65432          # The port used by the server
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    while 1:
-        text = input("Enter your message: ") # Note change to the old (Python 2) raw_input
-        if text == "quit":
+    print(f"Connected to {HOST}:{PORT}")
+    
+    while True:
+        text = input("Enter your message (or 'quit' to exit): ")
+        if text.lower() == "quit":
             break
-        s.send(text.encode())     # send the encoded message (send in binary format)
+        s.sendall(text.encode())     # send the encoded message (send in binary format)
 
-        data = s.recv(1024)
-        print("from server: ", data)
+        try:
+            data = s.recv(1024)
+            if not data:
+                print("Server closed the connection.")
+                break
+            print("Received from server:", data.decode())
+        except ConnectionResetError:
+            print("Server closed the connection unexpectedly.")
+            break
+
+print("Closing connection")
